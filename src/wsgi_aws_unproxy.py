@@ -1,3 +1,10 @@
+"""
+WSGI middleware that makes sure that ``REMOTE_ADDR``
+points to the actual client, and not the AWS loadbalancer.
+
+This is needed for proper IP logging, Sentry error reporting,
+and potential rate limiting.
+"""
 import logging
 
 import requests
