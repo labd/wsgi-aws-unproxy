@@ -46,7 +46,9 @@ This includes contact forms, Sentry error reporting and rate limiting tools.
 Installation
 ============
 
-You can install the latest version using pip::
+You can install the latest version using pip:
+
+.. code-block:: bash
 
     pip install wsgi-aws-unproxy
 
