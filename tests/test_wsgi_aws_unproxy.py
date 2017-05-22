@@ -1,4 +1,5 @@
 import pytest
+import requests.exceptions
 import requests_mock
 from netaddr import IPNetwork
 
@@ -121,12 +122,26 @@ def test_no_xforwarded_header(wsgi_app):
     }, None) == 'ip=10.0.0.99, ff='
 
 
+def test_unproxy_bad_request():
+    """
+    Test that wrapping wsgi object in unproxy doesn't crash
+    """
+    def app(environ, start_response):
+        return environ['REMOTE_ADDR']  # pragma: no cover
+
+    with requests_mock.mock() as rm:
+        rm.get('https://ip-ranges.amazonaws.com/ip-ranges.json',
+                exc=requests.exceptions.ConnectTimeout)
+        app = UnProxy(app)
+        assert app._allowed_proxy_ips == []
+
+
 def test_unproxy_bad_json():
     """
     Test that wrapping wsgi object in unproxy doesn't crash
     """
     def app(environ, start_response):
-        return environ['REMOTE_ADDR']
+        return environ['REMOTE_ADDR']  # pragma: no cover
 
     with requests_mock.mock() as rm:
         rm.get('https://ip-ranges.amazonaws.com/ip-ranges.json', text='{NOT_JSON!}')
