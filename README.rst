@@ -1,3 +1,20 @@
+.. start-no-pypi
+
+.. image:: https://travis-ci.org/LabD/wsgi-aws-unproxy.svg?branch=master
+    :target: https://travis-ci.org/LabD/wsgi-aws-unproxy
+
+.. image:: http://codecov.io/github/LabD/wsgi-aws-unproxy/coverage.svg?branch=master
+    :target: http://codecov.io/github/LabD/wsgi-aws-unproxy?branch=master
+
+.. image:: https://img.shields.io/pypi/l/wsgi-aws-unproxy.svg
+    :target: https://pypi.python.org/pypi/wsgi-aws-unproxy/
+
+.. image:: https://img.shields.io/pypi/v/wsgi-aws-unproxy.svg
+    :target: https://pypi.python.org/pypi/wsgi-aws-unproxy/
+
+.. end-no-pypi
+
+
 ================
 WSGI AWS Unproxy
 ================

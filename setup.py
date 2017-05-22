@@ -1,3 +1,4 @@
+import re
 from setuptools import setup
 
 install_require = [
@@ -23,11 +24,16 @@ tests_require = [
 ]
 
 
+with open('README.rst') as fh:
+    long_description = re.sub('^.. start-no-pypi.*^.. end-no-pypi', '',
+                              fh.read(), flags=re.M | re.S)
+
+
 setup(
     name='wsgi-aws-unproxy',
     version='0.0.1',
     description="Simple wsgi middleware to unproxy AWS",
-    long_description=open('README.rst', 'r').read(),
+    long_description=long_description,
     url='https://github.com/labd/wsgi-aws-unproxy',
     author="Lab Digital",
     author_email="opensource@labdigital.nl",
