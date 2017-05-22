@@ -21,11 +21,12 @@ class UnProxy(object):
         x_forwarded_for = environ.get('HTTP_X_FORWARDED_FOR')
 
         if x_forwarded_for:
-            x_forwarded_for = [v.strip() for v in x_forwarded_for.split(',')]
+            forwarded_ips = [v.strip() for v in x_forwarded_for.split(',')]
 
-            while self._is_proxy_ip(remote_addr) and x_forwarded_for:
-                remote_addr = x_forwarded_for.pop()
+            while self._is_proxy_ip(remote_addr) and forwarded_ips:
+                remote_addr = forwarded_ips.pop()
 
+            x_forwarded_for = ", ".join(forwarded_ips)
             _env_set(environ, 'REMOTE_ADDR', remote_addr)
             _env_set(environ, 'HTTP_X_FORWARDED_FOR', x_forwarded_for)
         return self._app(environ, start_response)

@@ -8,7 +8,9 @@ from wsgi_aws_unproxy import UnProxy
 @pytest.fixture
 def wsgi_app():
     def app(environ, start_response):
-        return environ['REMOTE_ADDR']
+        return "ip={}, ff={}".format(
+            environ['REMOTE_ADDR'], environ.get('HTTP_X_FORWARDED_FOR', '')
+        )
 
     json_data = """
     {
@@ -77,7 +79,7 @@ def test_cloudfront_ip(wsgi_app):
     assert wsgi_app({
         'REMOTE_ADDR': '10.0.0.99',
         'HTTP_X_FORWARDED_FOR': '1.2.1.2, 13.32.0.99'
-    }, None) == '1.2.1.2'
+    }, None) == 'ip=1.2.1.2, ff='
 
 
 def test_non_proxy_ip_multiple(wsgi_app):
@@ -87,7 +89,7 @@ def test_non_proxy_ip_multiple(wsgi_app):
     assert wsgi_app({
         'REMOTE_ADDR': '10.0.0.99',
         'HTTP_X_FORWARDED_FOR': '1.2.1.2, 1.2.3.3'
-    }, None) == '1.2.3.3'
+    }, None) == 'ip=1.2.3.3, ff=1.2.1.2'
 
 
 def test_proxy_ip(wsgi_app):
@@ -97,7 +99,7 @@ def test_proxy_ip(wsgi_app):
     assert wsgi_app({
         'REMOTE_ADDR': '10.0.0.99',
         'HTTP_X_FORWARDED_FOR': '11.22.33.44'
-    }, None) == '11.22.33.44'
+    }, None) == 'ip=11.22.33.44, ff='
 
 
 def test_non_proxy_ip(wsgi_app):
@@ -107,14 +109,16 @@ def test_non_proxy_ip(wsgi_app):
     assert wsgi_app({
         'REMOTE_ADDR': '88.88.88.88',
         'HTTP_X_FORWARDED_FOR': '11.22.33.44'
-    }, None) == '88.88.88.88'
+    }, None) == 'ip=88.88.88.88, ff=11.22.33.44'
 
 
 def test_no_xforwarded_header(wsgi_app):
     """
     No X-Forwarded-For should not crash.
     """
-    assert wsgi_app({'REMOTE_ADDR': '10.0.0.99'}, None) == '10.0.0.99'
+    assert wsgi_app({
+        'REMOTE_ADDR': '10.0.0.99'
+    }, None) == 'ip=10.0.0.99, ff='
 
 
 def test_unproxy_bad_json():
