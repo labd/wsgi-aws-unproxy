@@ -82,9 +82,7 @@ def test_internal_ip(wsgi_app):
 
 
 def test_cloudfront_ip(wsgi_app):
-    """
-    Should skip first proxy.
-    """
+    """Should skip first proxy. """
     assert wsgi_app({
         'REMOTE_ADDR': '10.0.0.99',
         'HTTP_X_FORWARDED_FOR': '1.2.1.2, 13.32.0.99'
@@ -92,9 +90,7 @@ def test_cloudfront_ip(wsgi_app):
 
 
 def test_non_proxy_ip_multiple(wsgi_app):
-    """
-    Should return last (is not a proxy).
-    """
+    """Should return last (is not a proxy)."""
     assert wsgi_app({
         'REMOTE_ADDR': '10.0.0.99',
         'HTTP_X_FORWARDED_FOR': '1.2.1.2, 1.2.3.3'
@@ -102,9 +98,7 @@ def test_non_proxy_ip_multiple(wsgi_app):
 
 
 def test_proxy_ip(wsgi_app):
-    """
-    Remote addr is proxy, returns the forward.
-    """
+    """Remote addr is proxy, returns the forward."""
     assert wsgi_app({
         'REMOTE_ADDR': '10.0.0.99',
         'HTTP_X_FORWARDED_FOR': '11.22.33.44'
@@ -112,9 +106,7 @@ def test_proxy_ip(wsgi_app):
 
 
 def test_non_proxy_ip(wsgi_app):
-    """
-    Not a proxy. so REMOTE_ADDR remains unchanged.
-    """
+    """Not a proxy. so REMOTE_ADDR remains unchanged."""
     assert wsgi_app({
         'REMOTE_ADDR': '88.88.88.88',
         'HTTP_X_FORWARDED_FOR': '11.22.33.44'
@@ -122,32 +114,26 @@ def test_non_proxy_ip(wsgi_app):
 
 
 def test_no_xforwarded_header(wsgi_app):
-    """
-    No X-Forwarded-For should not crash.
-    """
+    """No X-Forwarded-For should not crash."""
     assert wsgi_app({
         'REMOTE_ADDR': '10.0.0.99'
     }, None) == 'ip=10.0.0.99, ff='
 
 
 def test_unproxy_bad_request():
-    """
-    Test that wrapping wsgi object in unproxy doesn't crash
-    """
+    """Test that wrapping wsgi object in unproxy doesn't crash"""
     def app(environ, start_response):
         return environ['REMOTE_ADDR']  # pragma: no cover
 
     with requests_mock.mock() as rm:
         rm.get('https://ip-ranges.amazonaws.com/ip-ranges.json',
-                exc=requests.exceptions.ConnectTimeout)
+               exc=requests.exceptions.ConnectTimeout)
         app = UnProxy(app)
         assert app._allowed_proxy_ips == []
 
 
 def test_unproxy_bad_json():
-    """
-    Test that wrapping wsgi object in unproxy doesn't crash
-    """
+    """Test that wrapping wsgi object in unproxy doesn't crash"""
     def app(environ, start_response):
         return environ['REMOTE_ADDR']  # pragma: no cover
 
