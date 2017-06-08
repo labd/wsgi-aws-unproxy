@@ -81,6 +81,14 @@ def test_internal_ip(wsgi_app):
     }, None) == 'ip=1.2.1.2, ff='
 
 
+def test_internal_invalid_ip(wsgi_app):
+    """Should skip first proxy. """
+    assert wsgi_app({
+        'REMOTE_ADDR': '172.20.5.4',
+        'HTTP_X_FORWARDED_FOR': '1.3.4.5, 172.20.46.123, 94.128.0.1, 172.20.45.1'
+    }, None) == 'ip=94.128.0.1, ff=1.3.4.5, 172.20.46.123'
+
+
 def test_cloudfront_ip(wsgi_app):
     """Should skip first proxy. """
     assert wsgi_app({
