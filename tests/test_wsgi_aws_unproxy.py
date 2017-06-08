@@ -60,7 +60,7 @@ def test_assert_networks(wsgi_app):
     assert wsgi_app._allowed_proxy_ips == [
         # Default
         IPNetwork('10.0.0.0/8'),
-        IPNetwork('172.16.0.0/20'),
+        IPNetwork('172.16.0.0/12'),
         IPNetwork('192.168.0.0/16'),
 
         # Extra
@@ -71,6 +71,14 @@ def test_assert_networks(wsgi_app):
     assert not wsgi_app._is_proxy_ip('FOOBAR')
     assert wsgi_app._is_proxy_ip('10.0.0.99')
     assert wsgi_app._is_proxy_ip('13.32.0.99')
+
+
+def test_internal_ip(wsgi_app):
+    """Should skip first proxy. """
+    assert wsgi_app({
+        'REMOTE_ADDR': '10.0.0.99',
+        'HTTP_X_FORWARDED_FOR': '1.2.1.2, 172.20.46.123'
+    }, None) == 'ip=1.2.1.2, ff='
 
 
 def test_cloudfront_ip(wsgi_app):
