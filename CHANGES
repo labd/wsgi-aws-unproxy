@@ -1,3 +1,7 @@
+1.1.0 (unreleased)
+------------------
+Fix CIDR for internal ip range (172.16/12)
+
 1.0.0 (unreleased)
 ------------------
 Initial release to pypi
