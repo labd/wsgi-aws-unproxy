@@ -25,7 +25,7 @@ class UnProxy(object):
             if self._allowed_proxy_ips is None:
                 # Load on demand, so UnProxy() can be applied unconditionally
                 # for development too without slowing down Django's runserver.
-                self._load_allowed_ips()
+                self._allowed_proxy_ips = self._load_allowed_ips()
 
             while self._is_proxy_ip(remote_addr) and forwarded_ips:
                 remote_addr = forwarded_ips.pop()
