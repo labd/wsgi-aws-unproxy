@@ -9,6 +9,7 @@ import logging
 
 import requests
 from netaddr import AddrFormatError, IPNetwork
+from requests.packages.urllib3.util.retry import Retry
 
 
 class UnProxy(object):
@@ -55,9 +56,17 @@ class UnProxy(object):
             '192.168.0.0/16',
         ]
 
+        retry = Retry(
+            total=5,
+            read=5,
+            connect=5,
+            backoff_factor=0.1,
+            status_forcelist=[500, 502, 504],
+        )
+
         session = requests.session()
-        session.mount('http://', requests.adapters.HTTPAdapter(max_retries=5))
-        session.mount('https://', requests.adapters.HTTPAdapter(max_retries=5))
+        session.mount('http://', requests.adapters.HTTPAdapter(max_retries=retry))
+        session.mount('https://', requests.adapters.HTTPAdapter(max_retries=retry))
 
         # Cloudfront
         try:
