@@ -1,7 +1,13 @@
+1.2.0 (2020-02-12)
+==================
+Update max-retries and add backoff logic for retrieving aws ip addressess
+
+
 1.1.0 (unreleased)
-------------------
+==================
 Fix CIDR for internal ip range (172.16/12)
 
+
 1.0.0 (unreleased)
-------------------
+==================
 Initial release to pypi
