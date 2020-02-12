@@ -1,3 +1,4 @@
+import json
 import pytest
 import requests.exceptions
 import requests_mock
@@ -50,14 +51,14 @@ def wsgi_app():
             text=json_data)
         app = UnProxy(app)
 
-    return app
+        yield app
 
 
 def test_assert_networks(wsgi_app):
     """
     Test that wrapping wsgi object in unproxy doesn't crash.
     """
-    assert wsgi_app._allowed_proxy_ips == [
+    assert wsgi_app.allowed_proxy_ips == [
         # Default
         IPNetwork('10.0.0.0/8'),
         IPNetwork('172.16.0.0/12'),
@@ -137,7 +138,7 @@ def test_unproxy_bad_request():
         rm.get('https://ip-ranges.amazonaws.com/ip-ranges.json',
                exc=requests.exceptions.ConnectTimeout)
         app = UnProxy(app)
-        assert app._allowed_proxy_ips == []
+        assert app.allowed_proxy_ips == []
 
 
 def test_unproxy_bad_json():
@@ -148,4 +149,4 @@ def test_unproxy_bad_json():
     with requests_mock.mock() as rm:
         rm.get('https://ip-ranges.amazonaws.com/ip-ranges.json', text='{NOT_JSON!}')
         app = UnProxy(app)
-        assert app._allowed_proxy_ips == []
+        assert app.allowed_proxy_ips == []

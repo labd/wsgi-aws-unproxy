@@ -15,7 +15,6 @@ from requests.packages.urllib3.util.retry import Retry
 class UnProxy(object):
     def __init__(self, app):
         self._app = app
-        self._allowed_proxy_ips = None
 
     def __call__(self, environ, start_response):
         remote_addr = environ.get('REMOTE_ADDR')
@@ -23,12 +22,6 @@ class UnProxy(object):
 
         if x_forwarded_for:
             forwarded_ips = [v.strip() for v in x_forwarded_for.split(',')]
-
-            # Load on demand, so UnProxy() can be applied unconditionally
-            # for development too without slowing down Django's runserver.
-            if self._allowed_proxy_ips is None:
-                self._allowed_proxy_ips = self._get_allowed_ips()
-
             while self._is_proxy_ip(remote_addr) and forwarded_ips:
                 remote_addr = forwarded_ips.pop()
 
@@ -39,12 +32,18 @@ class UnProxy(object):
 
     def _is_proxy_ip(self, ip):
         try:
-            for addr in self._allowed_proxy_ips:
+            for addr in self.allowed_proxy_ips:
                 if ip in addr:
                     return True
             return False
         except AddrFormatError:
             return False
+
+    @property
+    def allowed_proxy_ips(self):
+        if not hasattr(self, '_allowed_proxy_ips'):
+            self._allowed_proxy_ips = self._get_allowed_ips()
+        return self._allowed_proxy_ips
 
     def _get_allowed_ips(self):
         """Retrieve the cloudfront ip's from amazon"""
