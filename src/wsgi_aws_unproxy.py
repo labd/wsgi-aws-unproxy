@@ -22,10 +22,11 @@ class UnProxy(object):
 
         if x_forwarded_for:
             forwarded_ips = [v.strip() for v in x_forwarded_for.split(',')]
+
+            # Load on demand, so UnProxy() can be applied unconditionally
+            # for development too without slowing down Django's runserver.
             if self._allowed_proxy_ips is None:
-                # Load on demand, so UnProxy() can be applied unconditionally
-                # for development too without slowing down Django's runserver.
-                self._load_allowed_ips()
+                self._allowed_proxy_ips = self._get_allowed_ips()
 
             while self._is_proxy_ip(remote_addr) and forwarded_ips:
                 remote_addr = forwarded_ips.pop()
@@ -44,7 +45,7 @@ class UnProxy(object):
         except AddrFormatError:
             return False
 
-    def _load_allowed_ips(self):
+    def _get_allowed_ips(self):
         """Retrieve the cloudfront ip's from amazon"""
 
         # Base
