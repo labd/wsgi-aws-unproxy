@@ -1,8 +1,8 @@
 .. start-no-pypi
 
-.. image:: https://travis-ci.org/LabD/wsgi-aws-unproxy.svg?branch=master
-    :target: https://travis-ci.org/LabD/wsgi-aws-unproxy
-
+.. image:: https://github.com/labd/wsgi-aws-unproxy/workflows/Python%20Tests/badge.svg
+    :target: https://github.com/labd/wsgi-aws-unproxy/workflows/Python%20Tests/
+    
 .. image:: http://codecov.io/github/LabD/wsgi-aws-unproxy/coverage.svg?branch=master
     :target: http://codecov.io/github/LabD/wsgi-aws-unproxy?branch=master
 
