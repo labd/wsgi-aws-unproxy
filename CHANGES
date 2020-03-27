@@ -1,3 +1,8 @@
+1.2.1 (2020-XX-XX)
+==================
+Added AWS Global Accelerator services to allowed proxy ips.
+
+
 1.2.0 (2020-02-12)
 ==================
 Update max-retries and add backoff logic for retrieving aws ip addressess
