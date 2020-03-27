@@ -15,6 +15,11 @@ coverage:
 lint:
 	flake8 src/ tests/
 	isort --recursive --check-only --diff src tests
+	black --check src/ tests/
+
+format:
+	isort --recursive src tests
+	black src/ tests/
 
 clean:
 	find . -name '*.pyc' -delete

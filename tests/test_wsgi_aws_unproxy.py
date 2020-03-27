@@ -34,6 +34,11 @@ def wsgi_app():
                 "ip_prefix": "13.32.0.0/15",
                 "region": "GLOBAL",
                 "service": "CLOUDFRONT"
+            },
+            {
+                "ip_prefix": "13.248.124.0/24",
+                "region": "us-east-1",
+                "service": "GLOBALACCELERATOR"
             }
         ],
         "ipv6_prefixes": [
@@ -64,12 +69,14 @@ def test_assert_networks(wsgi_app):
         IPNetwork("192.168.0.0/16"),
         # Extra
         IPNetwork("13.32.0.0/15"),
+        IPNetwork("13.248.124.0/24"),
     ]
 
     assert not wsgi_app._is_proxy_ip("127.0.0.1")
     assert not wsgi_app._is_proxy_ip("FOOBAR")
     assert wsgi_app._is_proxy_ip("10.0.0.99")
     assert wsgi_app._is_proxy_ip("13.32.0.99")
+    assert wsgi_app._is_proxy_ip("13.248.124.99")
 
 
 def test_internal_ip(wsgi_app):
@@ -105,6 +112,20 @@ def test_cloudfront_ip(wsgi_app):
     assert (
         wsgi_app(
             {"REMOTE_ADDR": "10.0.0.99", "HTTP_X_FORWARDED_FOR": "1.2.1.2, 13.32.0.99"},
+            None,
+        )
+        == "ip=1.2.1.2, ff="
+    )
+
+
+def test_global_accelerator_ip(wsgi_app):
+    """Should skip first proxy. """
+    assert (
+        wsgi_app(
+            {
+                "REMOTE_ADDR": "10.0.0.99",
+                "HTTP_X_FORWARDED_FOR": "1.2.1.2, 13.248.124.99",
+            },
             None,
         )
         == "ip=1.2.1.2, ff="
