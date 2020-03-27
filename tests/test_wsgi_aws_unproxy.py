@@ -120,10 +120,16 @@ def test_cloudfront_ip(wsgi_app):
 
 def test_global_accelerator_ip(wsgi_app):
     """Should skip first proxy. """
-    assert wsgi_app({
-        'REMOTE_ADDR': '10.0.0.99',
-        'HTTP_X_FORWARDED_FOR': '1.2.1.2, 13.248.124.99'
-    }, None) == 'ip=1.2.1.2, ff='
+    assert (
+        wsgi_app(
+            {
+                "REMOTE_ADDR": "10.0.0.99",
+                "HTTP_X_FORWARDED_FOR": "1.2.1.2, 13.248.124.99",
+            },
+            None,
+        )
+        == "ip=1.2.1.2, ff="
+    )
 
 
 def test_non_proxy_ip_multiple(wsgi_app):
