@@ -85,7 +85,7 @@ class UnProxy(object):
 
             values.extend([
                 x['ip_prefix'] for x in data['prefixes']
-                if x['service'] == 'CLOUDFRONT'
+                if x['service'] in ('CLOUDFRONT', 'GLOBALACCELERATOR')
             ])
         return [IPNetwork(addr) for addr in values]
 
