@@ -12,12 +12,13 @@ docs_require = [
 ]
 
 tests_require = [
+    "coverage[toml]==5.0.3",
     'requests-mock==1.3.0',
     'pytest-cov>=2.2.0',
     'pytest>=2.8.3',
 
     # Linting
-    'isort==4.2.5',
+    "isort[pyproject]==4.3.21",
     'flake8==3.0.3',
     'flake8-blind-except==0.1.1',
     'flake8-debugger==1.4.0',
