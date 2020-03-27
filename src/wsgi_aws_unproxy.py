@@ -8,7 +8,7 @@ and potential rate limiting.
 import logging
 
 import requests
-from netaddr import AddrFormatError, IPNetwork
+from netaddr import AddrFormatError, IPNetwork, cidr_merge
 from requests.packages.urllib3.util.retry import Retry
 
 
@@ -90,7 +90,7 @@ class UnProxy(object):
                     if x["service"] in ("CLOUDFRONT", "GLOBALACCELERATOR")
                 ]
             )
-        return [IPNetwork(addr) for addr in values]
+        return cidr_merge([IPNetwork(addr) for addr in values])
 
 
 def _env_set(environ, key, value):

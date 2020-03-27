@@ -3,7 +3,7 @@ import json
 import pytest
 import requests.exceptions
 import requests_mock
-from netaddr import IPNetwork
+from netaddr import IPNetwork, cidr_merge
 
 from wsgi_aws_unproxy import UnProxy
 
@@ -39,6 +39,16 @@ def wsgi_app():
                 "ip_prefix": "13.248.124.0/24",
                 "region": "us-east-1",
                 "service": "GLOBALACCELERATOR"
+            },
+            {
+                "ip_prefix": "192.0.4.0/25",
+                "region": "us-east-1",
+                "service": "GLOBALACCELERATOR"
+            },
+            {
+                "ip_prefix": "192.0.4.128/25",
+                "region": "us-east-1",
+                "service": "GLOBALACCELERATOR"
             }
         ],
         "ipv6_prefixes": [
@@ -62,7 +72,7 @@ def test_assert_networks(wsgi_app):
     """
     Test that wrapping wsgi object in unproxy doesn't crash.
     """
-    assert wsgi_app.allowed_proxy_ips == [
+    assert wsgi_app.allowed_proxy_ips == cidr_merge([
         # Default
         IPNetwork("10.0.0.0/8"),
         IPNetwork("172.16.0.0/12"),
@@ -70,7 +80,8 @@ def test_assert_networks(wsgi_app):
         # Extra
         IPNetwork("13.32.0.0/15"),
         IPNetwork("13.248.124.0/24"),
-    ]
+        IPNetwork("192.0.4.0/24"),
+    ])
 
     assert not wsgi_app._is_proxy_ip("127.0.0.1")
     assert not wsgi_app._is_proxy_ip("FOOBAR")
