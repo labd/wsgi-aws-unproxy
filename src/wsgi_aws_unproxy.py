@@ -17,17 +17,17 @@ class UnProxy(object):
         self._app = app
 
     def __call__(self, environ, start_response):
-        remote_addr = environ.get('REMOTE_ADDR')
-        x_forwarded_for = environ.get('HTTP_X_FORWARDED_FOR')
+        remote_addr = environ.get("REMOTE_ADDR")
+        x_forwarded_for = environ.get("HTTP_X_FORWARDED_FOR")
 
         if x_forwarded_for:
-            forwarded_ips = [v.strip() for v in x_forwarded_for.split(',')]
+            forwarded_ips = [v.strip() for v in x_forwarded_for.split(",")]
             while self._is_proxy_ip(remote_addr) and forwarded_ips:
                 remote_addr = forwarded_ips.pop()
 
             x_forwarded_for = ", ".join(forwarded_ips)
-            _env_set(environ, 'REMOTE_ADDR', remote_addr)
-            _env_set(environ, 'HTTP_X_FORWARDED_FOR', x_forwarded_for)
+            _env_set(environ, "REMOTE_ADDR", remote_addr)
+            _env_set(environ, "HTTP_X_FORWARDED_FOR", x_forwarded_for)
         return self._app(environ, start_response)
 
     def _is_proxy_ip(self, ip):
@@ -41,7 +41,7 @@ class UnProxy(object):
 
     @property
     def allowed_proxy_ips(self):
-        if not hasattr(self, '_allowed_proxy_ips'):
+        if not hasattr(self, "_allowed_proxy_ips"):
             self._allowed_proxy_ips = self._get_allowed_ips()
         return self._allowed_proxy_ips
 
@@ -50,9 +50,9 @@ class UnProxy(object):
 
         # Base
         values = [
-            '10.0.0.0/8',
-            '172.16.0.0/12',
-            '192.168.0.0/16',
+            "10.0.0.0/8",
+            "172.16.0.0/12",
+            "192.168.0.0/16",
         ]
 
         retry = Retry(
@@ -64,12 +64,12 @@ class UnProxy(object):
         )
 
         session = requests.session()
-        session.mount('http://', requests.adapters.HTTPAdapter(max_retries=retry))
-        session.mount('https://', requests.adapters.HTTPAdapter(max_retries=retry))
+        session.mount("http://", requests.adapters.HTTPAdapter(max_retries=retry))
+        session.mount("https://", requests.adapters.HTTPAdapter(max_retries=retry))
 
         # Cloudfront
         try:
-            resp = session.get('https://ip-ranges.amazonaws.com/ip-ranges.json')
+            resp = session.get("https://ip-ranges.amazonaws.com/ip-ranges.json")
         except requests.ConnectionError:
             logger = logging.getLogger(__name__)
             logger.exception("Unable to retrieve AWS ip ranges")
@@ -83,10 +83,13 @@ class UnProxy(object):
                 logger.exception("Unable to retrieve AWS ip ranges")
                 return []
 
-            values.extend([
-                x['ip_prefix'] for x in data['prefixes']
-                if x['service'] == 'CLOUDFRONT'
-            ])
+            values.extend(
+                [
+                    x["ip_prefix"]
+                    for x in data["prefixes"]
+                    if x["service"] == "CLOUDFRONT"
+                ]
+            )
         return [IPNetwork(addr) for addr in values]
 
 
