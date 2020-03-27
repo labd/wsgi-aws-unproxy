@@ -1,4 +1,5 @@
 import json
+
 import pytest
 import requests.exceptions
 import requests_mock
