@@ -3,8 +3,8 @@ import re
 from setuptools import setup
 
 install_require = [
-    'netaddr',
-    'requests',
+    'netaddr>=0.7.19',
+    'requests>=2.23.0',
 ]
 
 docs_require = [
