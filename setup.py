@@ -33,7 +33,7 @@ with open('README.rst') as fh:
 
 setup(
     name='wsgi-aws-unproxy',
-    version='1.2.0',
+    version='1.2.1',
     description="Simple wsgi middleware to unproxy AWS",
     long_description=long_description,
     url='https://github.com/labd/wsgi-aws-unproxy',
