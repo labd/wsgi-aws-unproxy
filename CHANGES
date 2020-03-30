@@ -1,6 +1,7 @@
-1.2.1 (2020-XX-XX)
+1.2.1 (2020-03-30)
 ==================
 Added AWS Global Accelerator services to allowed proxy ips.
+Optimized ip compare loop
 
 
 1.2.0 (2020-02-12)
