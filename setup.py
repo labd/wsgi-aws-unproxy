@@ -18,11 +18,7 @@ tests_require = [
     'pytest>=2.8.3',
 
     # Linting
-    "isort[pyproject]==4.3.21",
-    'flake8==3.0.3',
-    'flake8-blind-except==0.1.1',
-    'flake8-debugger==1.4.0',
-    'flake8-imports',
+    'ruff; python_version >= "3.7"',
 ]
 
 
