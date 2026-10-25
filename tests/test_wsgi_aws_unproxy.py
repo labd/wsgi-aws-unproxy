@@ -1,5 +1,3 @@
-import json
-
 import pytest
 import requests.exceptions
 import requests_mock
@@ -93,7 +91,7 @@ def test_assert_networks(wsgi_app):
 
 
 def test_internal_ip(wsgi_app):
-    """Should skip first proxy. """
+    """Should skip first proxy."""
     assert (
         wsgi_app(
             {
@@ -107,7 +105,7 @@ def test_internal_ip(wsgi_app):
 
 
 def test_internal_invalid_ip(wsgi_app):
-    """Should skip first proxy. """
+    """Should skip first proxy."""
     assert (
         wsgi_app(
             {
@@ -121,7 +119,7 @@ def test_internal_invalid_ip(wsgi_app):
 
 
 def test_cloudfront_ip(wsgi_app):
-    """Should skip first proxy. """
+    """Should skip first proxy."""
     assert (
         wsgi_app(
             {"REMOTE_ADDR": "10.0.0.99", "HTTP_X_FORWARDED_FOR": "1.2.1.2, 13.32.0.99"},
@@ -132,7 +130,7 @@ def test_cloudfront_ip(wsgi_app):
 
 
 def test_global_accelerator_ip(wsgi_app):
-    """Should skip first proxy. """
+    """Should skip first proxy."""
     assert (
         wsgi_app(
             {

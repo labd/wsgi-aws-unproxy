@@ -5,6 +5,7 @@ points to the actual client, and not the AWS loadbalancer.
 This is needed for proper IP logging, Sentry error reporting,
 and potential rate limiting.
 """
+
 import logging
 
 import requests
@@ -94,7 +95,7 @@ class UnProxy(object):
 
 
 def _env_set(environ, key, value):
-    """ Sets or deletes the given key in the environ dict. """
+    """Sets or deletes the given key in the environ dict."""
     if value:
         environ[key] = value
     elif key in environ:
