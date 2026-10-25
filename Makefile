@@ -13,13 +13,12 @@ coverage:
 	py.test --cov=wsgi_aws_unproxy --cov-report=term-missing --cov-report=html
 
 lint:
-	flake8 src/ tests/
-	isort --recursive --check-only --diff src tests
-	black --check src/ tests/
+	ruff format --check src tests
+	ruff check src tests
 
 format:
-	isort --recursive src tests
-	black src/ tests/
+	ruff format src tests
+	ruff check --fix src tests
 
 clean:
 	find . -name '*.pyc' -delete
