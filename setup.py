@@ -12,13 +12,12 @@ docs_require = [
 ]
 
 tests_require = [
-    "coverage[toml]==5.0.3",
-    'requests-mock==1.3.0',
-    'pytest-cov>=2.2.0',
-    'pytest>=2.8.3',
-
+    "coverage[toml]>=7.6",
+    "requests-mock>=1.12",
+    "pytest-cov>=6.0",
+    "pytest>=8.3",
     # Linting
-    'ruff; python_version >= "3.7"',
+    "ruff",
 ]
 
 
@@ -35,6 +34,7 @@ setup(
     url='https://github.com/labd/wsgi-aws-unproxy',
     author="Lab Digital",
     author_email="opensource@labdigital.nl",
+    python_requires=">=3.11",
     install_requires=install_require,
     tests_require=tests_require,
     extras_require={
@@ -47,13 +47,11 @@ setup(
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Programming Language :: Python :: 3.13',
+        'Programming Language :: Python :: 3.14',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy',
     ],

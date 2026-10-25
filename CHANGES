@@ -1,3 +1,8 @@
+Unreleased
+==========
+Require Python 3.11 or newer (tested on 3.11-3.14). Dropped Python 2.7 and 3.5-3.10.
+
+
 1.2.1 (2020-03-30)
 ==================
 Added AWS Global Accelerator services to allowed proxy ips.
