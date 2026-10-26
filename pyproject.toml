@@ -1,14 +1,62 @@
-
 [build-system]
-requires = ["setuptools>=40.6.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wsgi-aws-unproxy"
+version = "1.2.1"
+description = "Simple wsgi middleware to unproxy AWS"
+readme = "README.rst"
+license = "MIT"
+license-files = ["LICENSE", "AUTHORS"]
+authors = [{ name = "Lab Digital", email = "opensource@labdigital.nl" }]
+requires-python = ">=3.11"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = [
+  "netaddr>=0.7.19",
+  "requests>=2.23.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/labd/wsgi-aws-unproxy"
+
+[dependency-groups]
+dev = [{ include-group = "test" }]
+test = [
+  "coverage[toml]>=7.17.0",
+  "requests-mock>=1.12.1",
+  "pytest-cov>=7.1.0",
+  "pytest>=9.1.1",
+  "ruff>=0.17.2",
+]
+
+[tool.hatch.build.targets.wheel]
+only-include = ["src/wsgi_aws_unproxy.py"]
+sources = ["src"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "README.rst", "CHANGES", "LICENSE", "AUTHORS"]
+
+[tool.pytest.ini_options]
+minversion = "3.0"
+strict = true
+testpaths = ["tests"]
 
 [tool.coverage.run]
 branch = true
 source = ["wsgi_aws_unproxy"]
 
 [tool.coverage.paths]
-source = ["src", ".tox/*/site-packages"]
+source = ["src", ".venv/lib/python*/site-packages"]
 
 [tool.coverage.report]
 show_missing = true

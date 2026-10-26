@@ -1,30 +1,24 @@
-.PHONY: install clean test retest coverage
+.PHONY: install clean test retest coverage lint format
 
 install:
-	pip install -e .[docs,test]
+	uv sync
 
 test:
-	py.test -vvv
+	uv run pytest -vvv
 
 retest:
-	py.test -vvv --lf
+	uv run pytest -vvv --lf
 
 coverage:
-	py.test --cov=wsgi_aws_unproxy --cov-report=term-missing --cov-report=html
+	uv run pytest --cov=wsgi_aws_unproxy --cov-report=term-missing --cov-report=html
 
 lint:
-	ruff format --check src tests
-	ruff check src tests
+	uv run ruff format --check src tests
+	uv run ruff check src tests
 
 format:
-	ruff format src tests
-	ruff check --fix src tests
+	uv run ruff format src tests
+	uv run ruff check --fix src tests
 
 clean:
 	find . -name '*.pyc' -delete
-
-release:
-	pip install twine wheel
-	rm -rf dist/*
-	python setup.py sdist bdist_wheel
-	twine upload -s dist/*
