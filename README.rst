@@ -1,20 +1,18 @@
-.. start-no-pypi
-
-.. image:: https://github.com/labd/wsgi-aws-unproxy/workflows/Python%20Tests/badge.svg
-    :target: https://github.com/labd/wsgi-aws-unproxy/actions
-    
-.. image:: https://img.shields.io/pypi/l/wsgi-aws-unproxy.svg
-    :target: https://pypi.python.org/pypi/wsgi-aws-unproxy/
-
-.. image:: https://img.shields.io/pypi/v/wsgi-aws-unproxy.svg
-    :target: https://pypi.python.org/pypi/wsgi-aws-unproxy/
-
-.. end-no-pypi
-
-
 ================
 WSGI AWS Unproxy
 ================
+
+.. image:: https://img.shields.io/pypi/v/wsgi-aws-unproxy
+    :target: https://pypi.org/project/wsgi-aws-unproxy/
+    :alt: PyPI
+
+.. image:: https://github.com/labd/wsgi-aws-unproxy/actions/workflows/python-test.yml/badge.svg
+    :target: https://github.com/labd/wsgi-aws-unproxy/actions/workflows/python-test.yml
+    :alt: Python Tests
+
+.. image:: https://img.shields.io/pypi/l/wsgi-aws-unproxy
+    :target: https://pypi.org/project/wsgi-aws-unproxy/
+    :alt: License
 
 Set the correct ``REMOTE_ADDR`` based on the ``X-Forwarded-For`` header,
 while only trusting the CloudFront IP addresses.
