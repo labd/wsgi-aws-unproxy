@@ -53,7 +53,7 @@ only-include = ["src/wsgi_aws_unproxy.py"]
 sources = ["src"]
 
 [tool.hatch.build.targets.sdist]
-include = ["src", "tests", "README.rst", "CHANGES", "LICENSE", "AUTHORS"]
+include = ["src", "tests", "README.rst", "CHANGELOG.md", "CHANGES", "LICENSE", "AUTHORS"]
 
 [tool.pytest.ini_options]
 minversion = "3.0"
